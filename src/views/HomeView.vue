@@ -106,7 +106,6 @@
                               <h3 class="editContent">Рэмбо: Последняя кровь</h3>
                               <a href="moviesingle.html" class="editContent" ></a>
                           </div>
-
                       </div>
                       <div class="special-sec1 row mt-3 editContent" >
                           <div class="img-deals col-md-4">
@@ -116,7 +115,6 @@
                               <h3 class="editContent" >Холодное сердце 2</h3>
                               <a href="moviesingle.html" class="editContent" ></a>
                           </div>
-
                       </div>
                       <div class="special-sec1 row mt-3 editContent" >
                           <div class="img-deals col-md-4">
@@ -126,7 +124,6 @@
                               <h3 class="editContent" >К звездам</h3>
                               <a href="moviesingle.html" class="editContent" ></a>
                           </div>
-
                       </div>
                       <div class="special-sec1 row mt-3 editContent" >
                           <div class="img-deals col-md-4">
@@ -136,7 +133,6 @@
                               <h3 class="editContent" >Терминатор: Темные судьбы</h3>
                               <a href="moviesingle.html" class="editContent" ></a>
                           </div>
-
                       </div>
                       <div class="special-sec1 row mt-3 editContent" >
                           <div class="img-deals col-md-4">
@@ -146,38 +142,37 @@
                               <h3 class="editContent" >Джокер</h3>
                               <a href="moviesingle.html" class="editContent" ></a>
                           </div>
-
                       </div>
                   </div>
               </div>
               <div class="left-ads-display col-lg-9">
                   <div class="row">
-                      <div class="col-md-4 product-men">
+                      <div v-for="movie in listMovie" :key="movie.id" class="col-md-4 product-men">
                           <div class="product-shoe-info editContent text-center mt-lg-4" >
                               <div class="men-thumb-item">
-                                  <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                                  <img :src="movie.poster" class="img-fluid" alt="" >
                               </div>
                               <div class="item-info-product">
                                   <h4 class="">
-                                      <a href="moviesingle.html" class="editContent" >К звездам</a>
+                                      <a href="#" @click="goTo(movie.id)" class="editContent">{{ movie.title }}</a>
                                   </h4>
-
                                   <div class="product_price">
                                       <div class="grid-price">
-                                          <span class="money editContent" >«The Game Begins»</span>
+                                          <span class="money editContent">{{ movie.tagline }}</span>
                                       </div>
                                   </div>
                                   <ul class="stars">
-                                      <li><a href="#"><span class="fa fa-star" aria-hidden="true" ></span></a></li>
-                                      <li><a href="#"><span class="fa fa-star" aria-hidden="true" ></span></a></li>
-                                      <li><a href="#"><span class="fa fa-star-half-o" aria-hidden="true" ></span></a></li>
-                                      <li><a href="#"><span class="fa fa-star-half-o" aria-hidden="true" ></span></a></li>
-                                      <li><a href="#"><span class="fa fa-star-o" aria-hidden="true" ></span></a></li>
+                                      <li v-for="star in listStar" :key="star">
+                                        <a href="#">
+                                            <span class="fa" :class="star <= movie.middle_star ? 'fa-star' : 'fa-star-o' " aria-hidden="true"></span>
+                                        </a>
+                                    </li>
                                   </ul>
                               </div>
                           </div>
                       </div>
                   </div>
+                  <Pagination :total="total" :item="listMovie.length" @page-changed="loadListMovies"/>
               </div>
           </div>
       </div>
@@ -186,13 +181,35 @@
 </template>
 
 <script>
-
-
-
+import Pagination from "../components/Pagination"
 export default {
   name: 'HomeView',
-  components: {
-    
+  data() {
+    return {
+        listMovie: [],
+        listStar: [1, 2, 3, 4, 5],
+        page: 1, //current page
+        total: 0
+
+    }
+  },
+  components: {Pagination},
+  created() {
+    this.loadListMovies(this.page)
+  },
+  methods: { // функции которые мы можем вызывать из других методов, или вызывать из нашего шаблона
+    async loadListMovies(pageNumber) {
+        this.listMovie = await fetch( //отправляет запросы к серверу
+            `${this.$store.getters.getServerUrl}/movie?page=${pageNumber}`
+        ).then(response => response.json()
+        ).then(response => {
+            this.total = response.count // кол-во элементов которые может вернуть на бэкэнд
+            return response.results
+        }) // наш ответ от сервера переобразуем в json
+    },
+    goTo(id) {
+        this.$router.push({name: 'Single', params: {id: id}})
+    }
   }
 }
 </script>

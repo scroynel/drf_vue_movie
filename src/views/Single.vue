@@ -5,53 +5,57 @@
             <div class="left-ads-display col-lg-12">
                 <div class="row">
                     <div class="desc1-left col-md-6">
-                        <img src="" class="img-fluid" alt="">
+                        <img :src="movie.poster" class="img-fluid" alt="">
                     </div>
                     <div class="desc1-right col-md-6 pl-lg-4">
-                        <h3 class="editContent">
-                            ТЕРМИНАТОР: ТЕМНЫЕ СУДЬБЫ</h3>
-                        <h5 class="editContent">Terminator: Dark Fate</h5>
+                        <h3 class="editContent">{{ movie.title }}</h3>
+                        <h5 class="editContent">{{ movie.tagline }}</h5>
                         <ul>
                             <li class="li-movie">
-                                <span><b>Год:</b> 2019</span>
+                                <span><b>Год:</b> {{ movie.year }}</span>
                             </li>
                             <li class="li-movie">
-                                <span><b>Страна:</b> США, Китай</span>
+                                <span><b>Страна:</b>{{ movie.country }}</span>
                             </li>
                             <li class="li-movie">
-                                <span><b>Слоган:</b> «Welcome to the Day after Judgment Day»</span>
+                                <span><b>Слоган:</b>{{ movie.tagline }}</span>
                             </li>
                             <li class="li-movie">
-                                <span><b>Режиссер:</b> Тим Миллер</span>
+                                <span><b>Режиссеры:</b> 
+                                    <span v-for="director in movie.directors" :key="director.id">
+                                        {{ director.name }}
+                                    </span>
+                                </span>
                             </li>
                             <li  class="li-movie">
-                                <span><b>Актеры:</b> Арнольд Шварценеггер, Маккензи Дэвис,
-                                Эдвард Ферлонг, Линда Хэмилтон, Том Хоппер, Кассандра Старр, Гэбриел Луна,
-                                Наталия Рейес, Стивен Кри, Диего Бонета</span>
+                                <span><b>Актеры:</b> 
+                                    <span v-for="actor in movie.actors" :key="actor.id">
+                                        {{ actor.name }}
+                                    </span>
+                                </span>
                             </li>
                             <li class="li-movie">
-                                <span><b>Жанр:</b> фантастика, боевик, приключения</span>
+                                <span><b>Жанры:</b>
+                                    <span v-for="genre in movie.genres" :key="genre">
+                                        {{ genre }}
+                                    </span>
+                                </span>
                             </li>
                             <li class="li-movie">
-                                <span><b>Премьера в мире:</b> 23 октября 2019</span>
+                                <span><b>Премьера в мире:</b> {{ movie.world_premiere }}</span>
                             </li>
                             <li class="li-movie">
-                                <span><b>Бюджет:</b> $185 000 000</span>
+                                <span><b>Бюджет:</b> ${{ movie.budget }}</span>
                             </li>
                             <li class="li-movie">
-                                <span><b>Сборы в США:</b> $61 150 256</span>
+                                <span><b>Сборы в США:</b> ${{ movie.fees_in_usa }}</span>
                             </li>
                             <li class="li-movie">
-                                <span><b>Сборы в мире:</b> $250 369 693</span>
+                                <span><b>Сборы в мире:</b> ${{ movie.fess_in_world }}</span>
                             </li>
                             <li class="li-movie">
                                 <a href="#"><b>Рейтинг:</b>
-                                    <span class="fa fa-star" aria-hidden="true"></span>
-                                    <span class="fa fa-star" aria-hidden="true"></span>
-                                    <span class="fa fa-star" aria-hidden="true"></span>
-                                    <span class="fa fa-star" aria-hidden="true"></span>
-                                    <span class="fa fa-star" aria-hidden="true"></span>
-                                    <span class="editContent">5.0</span>
+                                    <span v-for="star in listStar" :key="star" class="fa" :class="star <= movie.average_rating ? 'fa-star' : 'fa-star-o' " aria-hidden="true"></span>
                                 </a>
                             </li>
                             <div class="share-desc">
@@ -84,21 +88,12 @@
                 </div>
                 <div class="row sub-para-w3layouts mt-5">
                     <h3 class="shop-sing editContent">
-                        О фильме Терминатор: Темные судьбы</h3>
+                        О фильме {{ movie.title }}
+                    </h3>
                     <p>
                         <img src="bundles/images/about.jpg" class="img-fluid" alt="">
-                        <img src="bundles/images/admin.jpg" class="img-fluid" alt="">
-                        <img src="bundles/images/d1.jpg" class="img-fluid" alt="">
                     </p>
-                    <p class="editContent">Сара Коннор
-                        превратилась в настоящую охотницу
-                        за терминаторами и теперь занимается уничтожением роботов-убийц из
-                        будущего.
-                        Она считала, что главное — это не дать им добраться до Джона, но теперь
-                        появилась
-                        Дани Рамос, от выживания которой также зависит судьба человечества.
-                        Вместе с ней в бой вступает и загадочная Грейс, смесь человека и
-                        машины.</p>
+                    <p class="editContent" style="word-wrap: anywhere;" v-html="movie.description"></p>
                     <p class="mt-3 italic-blue editContent">
                         <iframe width="560" height="315"
                                 src="https://www.youtube.com/embed/A36LahZNUiE?controls=0"
@@ -115,63 +110,8 @@
                     </p>
                 </div>
                 <hr>
-                <div class="row">
-                    <div class="single-form-left">
-                        <div class="contact-single">
-                            <h3 class="editContent">
-                                <span class="sub-tittle editContent">02</span>
-                                Оставить отзыв
-                            </h3>
-                            <form action="#" method="get" class="mt-4">
-                                <div class="form-group editContent">
-                                    <label for="contactcomment" class="editContent">Ваш комментарий*</label>
-                                    <textarea class="form-control border" rows="5" id="contactcomment" required=""></textarea>
-                                </div>
-                                <div class="d-sm-flex">
-                                    <div class="col-sm-6 form-group p-0 editContent">
-                                        <label for="contactusername" class="editContent">Имя*</label>
-                                        <input type="text" class="form-control border" id="contactusername" required="">
-                                    </div>
-                                    <div class="col-sm-6 form-group ml-sm-3 editContent">
-                                        <label for="contactemail" class="editContent">Email*</label>
-                                        <input type="email" class="form-control border" id="contactemail" required="">
-                                    </div>
-                                </div>
-                                <button type="submit" class="mt-3 btn btn-success btn-block py-3">
-                                    Отправить
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="media py-5">
-                        <img src="bundles/images/te2.jpg" class="mr-3 img-fluid" alt="image">
-                        <div class="media-body mt-4">
-                            <h5 class="mt-0 editContent"
-                                 >Daniel Doe
-                            </h5>
-                            <p class="mt-2 editContent"  >
-                                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus
-                                scelerisque ante sollicitudin. Cras purus odio, vestibulum in
-                                vulputate at, tempus viverra turpis.
-                            </p>
-                            <div class="media mt-5 editContent">
-                                <a class="pr-3" href="#">
-                                    <img src="bundles/images/te1.jpg" class="img-fluid" alt="image">
-                                </a>
-                                <div class="media-body">
-                                    <h5 class="mt-0 editContent"
-                                         >Leia Organa</h5>
-                                    <p class="mt-2 editContent"
-                                         > Cras sit amet
-                                        nibh libero, in gravida nulla. Nulla vel metus
-                                        scelerisque ante sollicitudin. Cras purus odio,
-                                        vestibulum in vulputate at, tempus viverra turpis. Fusce
-                                        condimentum nunc ac nisi vulputate fringilla..</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- отзывы будут переданны в компонент Review в props -->
+                <Review :reviews="movie.reviews" :movie="movie.id" @reLoad="loadMovie"/> 
             </div>
         </div>
     </div>
@@ -180,8 +120,29 @@
 
 
 <script>
+import Review from '../components/Review'
+
     export default {
-        name: "Single"
+        name: "Single",
+        props: ['id'],
+        components: {Review},
+        data() {
+            return {
+                movie: {},
+                listStar: [1,2,3,4,5]
+            }
+        },
+        created() {
+            this.loadMovie()
+        },
+        methods: {
+            async loadMovie() {
+                this.movie = await fetch(
+                    `${this.$store.getters.getServerUrl}/movie/${this.id}`
+                ).then(response => response.json()) 
+                console.log(movie)              
+            }
+        }
     }
 </script>
 
